@@ -1,0 +1,77 @@
+description: |
+  $Description
+  Region: $region_title
+  Year: $year
+  Generated: $today
+
+model:
+  uid: 5
+  name: "Runoff5"
+
+time_period:
+  start: "$year-01-01"
+  end: "$year-12-31"
+
+initial:
+  mode: "from_file"
+  file: "$init_file"
+
+parameters:
+  path: "$params_dir/"
+  spatially_varying_file: "$params_csv"
+
+forcings:
+  type: "ranged"
+  path: "$forcings_dir/"
+  time_chunking: true
+
+  variables:
+    - name: "pr"
+      file: $pr_file_pattern
+      var_name: "$pr_varname" 
+      time_resolution: "$pr_resolution"
+      time_chunk_size: $chunk_days
+      required: true
+      dims: "$pr_dims"
+
+    - name: "t2m"
+      file: $t2_file_pattern
+      var_name: "$t2_varname"
+      time_resolution: "$t2_resolution"
+      time_chunk_size: $chunk_days
+      required: true
+      dims: "$t2_dims"
+
+forcing_mappings:
+  path: "$lookup_dir/"
+  variables:
+    - name: "pr"
+      file: "$lookup_pr_csv"
+    - name: "t2m"
+      file: "$lookup_t2m_csv"
+
+output:
+  print_interval: $print_interval
+  query_dt: $query_dt
+  final_interval_minutes: $final_interval_minutes
+  states: $states
+  output_path: "$output_dir"
+  final_output_file: "/final/final.nc"
+  runoff_output_file: "/runoff/runoff.nc"
+  final_per_year: $final_per_year
+  runoff_vars: [total_runoff]
+
+solver:
+  rtol: $rtol
+  atol: $atol
+  safety: $safety
+  min_scale: $min_scale
+  max_scale: $max_scale
+  override_tolerances: $override_tolerances
+  initial_step: $initial_step
+  override_initial_step: $override_initial_step
+
+flags:
+  use_mpi: false
+  max_gpu_mem_gb: 78
+  gpu_mem_buffer_pct: 15

@@ -1,0 +1,47 @@
+time:
+  start_date: $start_date
+  calendar: "julian" # "no_leap" or "julian"
+
+solver:
+  rk4_level: 1
+  dt: 1.0
+  rtol: 1E-4
+  atol: 1E-6
+
+parameters:
+  filename: $params
+
+initial_conditions:
+  flag: $ini_flag # 0 for constant, 1 for netcdf
+  initial_value: $ival
+  filename: $ini_file #only for flag 1
+  varname: "snapshot" #only for flag 1
+  id_varname: "LinkID" #only for flag 1
+
+boundary_conditions:
+  flag: 0 #0 no BC. 1 for netcdf of time series to use as parents
+  filename: ""
+  varname: "" #only for flag 1
+  id_varname: "" #only for flag 1
+  resolution: 0
+
+reservoir:
+  flag: 0 # 0 = no reservoirs, 1 use reservoirs
+  res_file: '' #list of IDs which have reservoirs
+
+runoff:
+  folder: $runoff_path # specify path to list of files
+  varname: "total_runoff_mmhr" #required if chunk_size > 0
+  id_varname: "system" #required if chunk_size > 0
+  resolution: 60
+  chunk_size: $chunk_size  #Set to 0 to not chunk files. If > 0, it is the size of each chunk in resoluton. 
+
+output:
+  flag: $out_flag # 0 for no output, 1 for subset by level, 2 subset by list
+  level: $out_level # only for flag 1
+  resolution: $out_resolution # resolution in minutes (instantaneous output; 15 minute default)
+  link_list_filename: $sav_path # only for flag 2
+  series_filepath: $series_filepath #creates timeseries_{time}.nc
+  snapshot_filepath: $snapshot_filepath #create snapshot_{time}.nc
+  max_output: 1 # 0 for no max output, 1 for max output
+  max_output_filepath: $max_output_filepath #create max_output_{time}.nc
