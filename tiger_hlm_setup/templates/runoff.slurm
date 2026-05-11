@@ -17,7 +17,7 @@ set -e
 # ==== Runoff ==========
 module purge
 module load Tiger_HLM_Runoff/$runoff_version
-srun ~/Tiger_HLM_GPU/bin/runoff $yaml > $out
+srun runoff $yaml > $out
 
 # ==== Routing ==========
 cd $routing_slurm_dir
