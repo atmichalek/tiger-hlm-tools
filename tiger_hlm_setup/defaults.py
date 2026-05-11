@@ -6,9 +6,9 @@ REQUIRED = object()
 
 # --- SLURM cluster settings ---
 SLURM_DEFAULTS = {
-    "account":         "gvillari",
-    "partition":       "gvillari",
-    "email":           "user@princeton.edu",
+    "account":         "my_account",
+    "partition":       "my_partition",
+    "email":           "user@university.edu",
     "runoff_version":  "1.0.0",
     "routing_version": "1.0.0",
     "runoff_time":     "24:00:00",
