@@ -76,7 +76,7 @@ def get_forcing_characteristics(ncfile,varname=None):
     if varname is not None:
         var_name = varname
     else:
-        chars = ["p", "r", "t2m", "tmp"]
+        chars = ["p", "r", "t2m", "tmp", "t_mean"]
         var_name = next((v for v in ds.data_vars if any(c in v.lower() for c in chars)), None)
     if var_name is None:
         raise RuntimeError(f"Could not detect forcing variable in {ncfile}. Vars: {list(ds.data_vars)}")
