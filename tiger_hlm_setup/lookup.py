@@ -64,7 +64,7 @@ def build_lookup(params_csv, lat2d, lon2d, out_csv, flip_dims=False):
     return out
 
 
-def get_forcing_characteristics(ncfile):
+def get_forcing_characteristics(ncfile,varname=None):
     """
     Inspect a forcing NetCDF and return (var_name, dims_string, time_resolution).
     dims_string is comma-joined, e.g. "time,lat,lon".
@@ -72,13 +72,19 @@ def get_forcing_characteristics(ncfile):
     ds = xr.open_dataset(ncfile)
     ds.close()
 
-    chars = ["p", "r", "t2m", "tmp"]
-    var_name = next((v for v in ds.data_vars if any(c in v.lower() for c in chars)), None)
+    # Try to detect the main forcing variable if not specified. Look for common substrings.
+    if varname is not None:
+        var_name = varname
+    else:
+        chars = ["p", "r", "t2m", "tmp"]
+        var_name = next((v for v in ds.data_vars if any(c in v.lower() for c in chars)), None)
     if var_name is None:
         raise RuntimeError(f"Could not detect forcing variable in {ncfile}. Vars: {list(ds.data_vars)}")
 
+    # Get dimensions as a comma-separated string
     dims = ",".join(ds[var_name].dims)
 
+    #time resolution: find the time coordinate, compute median diff, convert to hours
     time_var = next((c for c in ds.coords if c.lower() == "time"), None)
     if time_var is None:
         raise RuntimeError(f"No time coordinate found in {ncfile}")
