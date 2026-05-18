@@ -47,3 +47,4 @@ from tiger_hlm_setup import setup_longterm, setup_forecast, setup_spinup, genera
 - `generate_lookup(..., flip_dims=True)` handles products like IMERG where lat/lon array dimensions are transposed.
 - Routing output `level` and `resolution` are configurable via `out_level` and `out_resolution` in `routing_inputs`.
 - Runoff cleanup after routing is off by default; enable with `slurm_cfg={'remove_runoff': True}`.
+- Spinup automatically generates runoff and then routing without outputs except final. Runoff is automatically removed. 

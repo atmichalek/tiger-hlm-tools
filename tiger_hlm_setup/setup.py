@@ -236,7 +236,8 @@ def setup_spinup(
     #turn off runoff/routing output for spinup since it can consume a lot of space and isn't usually needed for diagnostics
     routing_inputs['out_flag'] = 0    
     routing_inputs['max_output_flag'] = 0
-    runoff_inputs['runoff_output'] = "" #disable runoff output by setting to empty string since the code checks for this
+
+    slurm_cfg['remove_runoff'] = True  # add flag to remove runoff files after routing to save space during spinup
 
 
     for cycle in range(1, n_cycles + 1):
