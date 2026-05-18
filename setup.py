@@ -14,5 +14,7 @@ setup(
         "pandas",
         "xarray",
         "scipy",
+        "netcdf4",
+        "h5netcdf",
     ],
 )
