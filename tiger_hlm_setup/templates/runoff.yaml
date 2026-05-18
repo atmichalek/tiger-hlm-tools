@@ -13,8 +13,9 @@ time_period:
   end: "$year-12-31"
 
 initial:
-  mode: "from_file"
+  mode: "$initial_mode" # "from_file" or "constant"
   file: "$init_file"
+  values: [0.01, 0.1, 0.0, 0.1, 0.01, 1.0, 1.0, 0.0, 0.0]
 
 parameters:
   path: "$params_dir/"

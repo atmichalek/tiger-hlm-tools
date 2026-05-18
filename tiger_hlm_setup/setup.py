@@ -236,9 +236,7 @@ def setup_spinup(
     #turn off runoff/routing output for spinup since it can consume a lot of space and isn't usually needed for diagnostics
     routing_inputs['out_flag'] = 0    
     routing_inputs['max_output_flag'] = 0
-
     slurm_cfg['remove_runoff'] = True  # add flag to remove runoff files after routing to save space during spinup
-
 
     for cycle in range(1, n_cycles + 1):
         cycle_root = f"{proj_root}spinup_{cycle}"
@@ -249,6 +247,7 @@ def setup_spinup(
         if cycle == 1:
             init_file = runoff_spinup_file
             ini_flag, ini_file, ival = 0, "", routing_initial_value
+            runoff_inputs['initial_mode'] = 'constant'
         else:
             prev_root    = f"{proj_root}spinup_{cycle - 1}"
             prev_paths   = _build_paths(prev_root, product, region)
@@ -259,6 +258,7 @@ def setup_spinup(
             ini_flag     = 1
             ini_file     = f"{prev_snap}_{spinup_year}-{suffix}_00_00_00.nc"
             ival         = 0.1
+            runoff_inputs['initial_mode'] = 'from_file'
 
         print(f"Spinup cycle {cycle}/{n_cycles}")
         _write_year(

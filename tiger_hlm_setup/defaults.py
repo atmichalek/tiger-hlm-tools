@@ -48,6 +48,7 @@ def runoff_yaml_defaults(region, solver_overrides=None):
         "region_title":         region,
         "year":                 REQUIRED,
         "today":                date.today().isoformat(),
+        "initial_mode":         "from_file",
         "init_file":            REQUIRED,
         "params_dir":           REQUIRED,
         "params_csv":           REQUIRED,
