@@ -43,5 +43,5 @@ output:
   link_list_filename: $sav_path # only for flag 2
   series_filepath: $series_filepath #creates timeseries_{time}.nc
   snapshot_filepath: $snapshot_filepath #create snapshot_{time}.nc
-  max_output: 1 # 0 for no max output, 1 for max output
+  max_output: $max_output_flag # 0 for no max output, 1 for max output
   max_output_filepath: $max_output_filepath #create max_output_{time}.nc

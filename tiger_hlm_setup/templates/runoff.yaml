@@ -57,7 +57,7 @@ output:
   states: $states
   output_path: "$output_dir"
   final_output_file: "/final/final.nc"
-  runoff_output_file: "/runoff/runoff.nc"
+  runoff_output_file: "$runoff_output"
   final_per_year: $final_per_year
   runoff_vars: [total_runoff]
 

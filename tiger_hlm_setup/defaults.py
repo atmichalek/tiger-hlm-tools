@@ -69,6 +69,7 @@ def runoff_yaml_defaults(region, solver_overrides=None):
         "final_interval_minutes": 0,
         "states":               [0, 1, 2, 3, 4, 5, 6, 7, 8],
         "output_dir":           REQUIRED,
+        "runoff_output":        "/runoff/runoff.nc",
         "final_per_year":       True,
         **solver,
     }
@@ -89,6 +90,7 @@ def routing_yaml_defaults():
         "out_flag":            2,
         "out_level":           2,
         "out_resolution":      15,
+        "max_output_flag":     1,
         "sav_path":            REQUIRED,
     }
 

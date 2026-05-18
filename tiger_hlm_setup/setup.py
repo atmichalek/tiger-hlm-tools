@@ -233,8 +233,14 @@ def setup_spinup(
     slurm_cfg = slurm_cfg or {}
     chunk_days = runoff_inputs.get("chunk_days", 4)
 
+    #turn off runoff/routing output for spinup since it can consume a lot of space and isn't usually needed for diagnostics
+    routing_inputs['out_flag'] = 0    
+    routing_inputs['max_output_flag'] = 0
+    runoff_inputs['runoff_output'] = "" #disable runoff output by setting to empty string since the code checks for this
+
+
     for cycle in range(1, n_cycles + 1):
-        cycle_root = f"{proj_root}_spinup_{cycle}"
+        cycle_root = f"{proj_root}spinup_{cycle}"
         paths = _build_paths(cycle_root, product, region)
         for d in paths.values():
             ensure_dir(d)
@@ -243,7 +249,7 @@ def setup_spinup(
             init_file = runoff_spinup_file
             ini_flag, ini_file, ival = 0, "", routing_initial_value
         else:
-            prev_root    = f"{proj_root}_spinup_{cycle - 1}"
+            prev_root    = f"{proj_root}spinup_{cycle - 1}"
             prev_paths   = _build_paths(prev_root, product, region)
             prev_final   = final_name_for_year(spinup_year, chunk_days)
             init_file    = f"{prev_paths['runoff_outputs']}/{spinup_year}/final/{prev_final}"
