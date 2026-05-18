@@ -8,6 +8,7 @@ setup(
     package_data={
         "tiger_hlm_setup": ["templates/**/*", "templates/*"],
     },
+    python_requires=">=3.11",
     install_requires=[
         "numpy",
         "pandas",
