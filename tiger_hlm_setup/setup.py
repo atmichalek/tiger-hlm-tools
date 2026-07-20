@@ -161,6 +161,7 @@ def setup_longterm(
     product="",
     runoff_spinup_file=None,
     routing_initial_value=0.1,
+    routing_initial_file=None,
     slurm_cfg=None,
     submit=False,
 ):
@@ -183,7 +184,10 @@ def setup_longterm(
         # routing initial condition
         snapshot_fp = f"{paths['routing_outputs']}/snapshot"
         if year == start_year:
-            ini_flag, ini_file, ival = 0, "", routing_initial_value
+            if routing_initial_file:
+                ini_flag, ini_file, ival = 1, routing_initial_file, 0.1
+            else:
+                ini_flag, ini_file, ival = 0, "", routing_initial_value
         else:
             ini_flag = 1
             ival = 0.1
