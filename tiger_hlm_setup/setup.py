@@ -37,15 +37,36 @@ def _merge(defaults, overrides):
     return out
 
 
+def _join_path(*parts):
+    segments = []
+    for part in parts:
+        if part is None:
+            continue
+        for seg in str(part).split("/"):
+            if seg.strip():
+                segments.append(seg.strip())
+    if not segments:
+        return ""
+    prefix = "/" if parts and str(parts[0]).startswith("/") else ""
+    return prefix + "/".join(segments)
+
+
 def _build_paths(proj_root, product, region):
-    runoff_root   = f"{proj_root}/runoff/{product}"
-    routing_root  = f"{proj_root}/routing/{product}"
+    runoff_root = _join_path(proj_root, "runoff", product)
+    routing_root = _join_path(proj_root, "routing", product)
     return {
-        "runoff_outputs":  f"{runoff_root}/outputs/{region}",
-        "runoff_slurm":    f"{runoff_root}/slurm/{region}",
-        "routing_outputs": f"{routing_root}/outputs/{region}",
-        "routing_slurm":   f"{routing_root}/slurm/{region}",
+        "runoff_outputs":  _join_path(runoff_root, "outputs", region),
+        "runoff_slurm":    _join_path(runoff_root, "slurm", region),
+        "routing_outputs": _join_path(routing_root, "outputs", region),
+        "routing_slurm":   _join_path(routing_root, "slurm", region),
     }
+
+
+def _build_job_name(prefix, region, product):
+    tag_parts = [str(part).strip().lower() for part in [region, product] if str(part).strip()]
+    if not tag_parts:
+        return prefix
+    return f"{prefix}_{'_'.join(tag_parts)}"
 
 
 def _write_year(
@@ -64,7 +85,6 @@ def _write_year(
     snapshot_fp    = f"{paths['routing_outputs']}/snapshot"
     max_output_fp  = f"{paths['routing_outputs']}/max_output"
 
-    tag            = f"{region.lower()}_{product.lower()}"
     runoff_yaml_f  = f"{paths['runoff_slurm']}/runoff_{year}.yaml"
     runoff_slurm_f = f"{paths['runoff_slurm']}/runoff_{year}.slurm"
     routing_yaml_f = f"{paths['routing_slurm']}/routing_{year}.yaml"
@@ -97,7 +117,7 @@ def _write_year(
 
     # --- runoff slurm ---
     rs = _merge(runoff_slurm_defaults(slurm_cfg), {
-        "name":              f"runoff_{tag}",
+        "name":              _build_job_name("runoff", region, product),
         "yaml":              os.path.basename(runoff_yaml_f),
         "out":               f"out_{year}.txt",
         "routing_slurm_dir": paths["routing_slurm"],
@@ -110,7 +130,7 @@ def _write_year(
     rts_defaults = routing_slurm_defaults(slurm_cfg)
     remove_cmd = "#remove runoff\nrm -f " + f"{runoff_path}/*.nc" if rts_defaults.get("remove_runoff") else "#remove runoff: disabled"
     rts = _merge(rts_defaults, {
-        "name":               f"routing_{tag}",
+        "name":               _build_job_name("routing", region, product),
         "yaml":               os.path.basename(routing_yaml_f),
         "out":                f"out_{year}.txt",
         "runoff_path":        f"{runoff_path}/*.nc",
