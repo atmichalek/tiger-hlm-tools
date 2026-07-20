@@ -48,3 +48,8 @@ from tiger_hlm_setup import setup_longterm, setup_forecast, setup_spinup, genera
 - Routing output `level` and `resolution` are configurable via `out_level` and `out_resolution` in `routing_inputs`.
 - Runoff cleanup after routing is off by default; enable with `slurm_cfg={'remove_runoff': True}`.
 - Spinup automatically generates runoff and then routing without outputs except final. Runoff is automatically removed. 
+
+## Details
+
+- Runoff module details: https://github.com/PrincetonUniversity/Tiger_HLM_GPU/wiki
+- Routing module details: https://github.com/PrincetonUniversity/Tiger_HLM_Routing/wiki    
