@@ -27,7 +27,7 @@ def describe_setup_options():
         "t2_varname": "Variable name for temperature forcing data.",
         "t2_resolution": "Temporal resolution of temperature forcing data; defaults to 24h.",
         "t2_dims": "Dimension names for temperature forcing data.",
-        "chunk_days": "Number of days per time chunk for forcings; defaults to 4.",
+        "chunk_days": "Required number of days per time chunk for forcings; continuous simulations require this value.",
         "lookup_dir": "Directory containing forcing lookup tables.",
         "lookup_pr_csv": "Lookup CSV for precipitation forcing mappings.",
         "lookup_t2m_csv": "Lookup CSV for temperature forcing mappings.",
