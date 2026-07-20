@@ -16,7 +16,7 @@ from .defaults import (
     runoff_slurm_defaults, routing_slurm_defaults,
 )
 from .utils import (
-    ensure_dir, final_name_for_year, is_leap_year,
+    ensure_dir, final_name_for_year, is_leap_year, last_chunk_bounds,
     render_template, write_file, submit_job,
 )
 
@@ -200,8 +200,8 @@ def setup_longterm(
         else:
             ini_flag = 1
             ival = 0.1
-            suffix = "12-30" if is_leap_year(year - 1) else "12-31"
-            ini_file = f"{snapshot_fp}_{year - 1}-{suffix}_00_00_00.nc"
+            prev_start, prev_end = last_chunk_bounds(year - 1, chunk_days)
+            ini_file = f"{snapshot_fp}_{year - 1}-{prev_start:%m-%d}_00_00_00.nc"
 
         _write_year(
             year, paths, region, product,
@@ -287,9 +287,9 @@ def setup_spinup(
             prev_final   = final_name_for_year(spinup_year, chunk_days)
             init_file    = f"{prev_paths['runoff_outputs']}/{spinup_year}/final/{prev_final}"
             prev_snap    = f"{prev_paths['routing_outputs']}/snapshot"
-            suffix       = "12-30" if is_leap_year(spinup_year) else "12-31"
+            prev_start, prev_end = last_chunk_bounds(spinup_year, chunk_days)
             ini_flag     = 1
-            ini_file     = f"{prev_snap}_{spinup_year}-{suffix}_00_00_00.nc"
+            ini_file     = f"{prev_snap}_{spinup_year}-{prev_start:%m-%d}_00_00_00.nc"
             ival         = 0.1
             runoff_inputs['initial_mode'] = 'from_file'
 
