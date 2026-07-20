@@ -24,7 +24,7 @@ parameters:
 forcings:
   type: "$forcing_type"
   path: "$forcings_dir/"
-$time_chunking_setting
+  time_chunking: true
 
   variables:
     - name: "pr"

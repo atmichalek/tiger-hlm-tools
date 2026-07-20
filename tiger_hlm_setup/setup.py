@@ -98,17 +98,15 @@ def _write_year(
         **runoff_inputs,
     })
     forcing_type = runoff_inputs.get("forcing_type", "ranged")
-    time_chunking = runoff_inputs.get("time_chunking", True)
     chunk_days = runoff_inputs.get("chunk_days")
-    if not time_chunking or chunk_days in (None, "", False):
+    if chunk_days in (None, "", False):
         ry.pop("chunk_days", None)
-        ry["time_chunking_setting"] = "  time_chunking: false"
         ry["pr_time_chunk_size"] = ""
         ry["t2m_time_chunk_size"] = ""
     else:
-        ry["time_chunking_setting"] = "  time_chunking: true"
         ry["pr_time_chunk_size"] = f"      time_chunk_size: {chunk_days}"
         ry["t2m_time_chunk_size"] = f"      time_chunk_size: {chunk_days}"
+    ry["time_chunking_setting"] = "  time_chunking: true"
     ry["forcing_type"] = forcing_type
     _validate(ry, f"runoff_yaml year={year}")
     write_file(runoff_yaml_f, render_template("runoff.yaml", ry))
