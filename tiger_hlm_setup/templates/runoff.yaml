@@ -22,16 +22,16 @@ parameters:
   spatially_varying_file: "$params_csv"
 
 forcings:
-  type: "ranged"
+  type: "netcdf"
   path: "$forcings_dir/"
-  time_chunking: true
+$time_chunking_setting
 
   variables:
     - name: "pr"
       file: $pr_file_pattern
       var_name: "$pr_varname" 
       time_resolution: "$pr_resolution"
-      time_chunk_size: $chunk_days
+$pr_time_chunk_size
       required: true
       dims: "$pr_dims"
 
@@ -39,7 +39,7 @@ forcings:
       file: $t2_file_pattern
       var_name: "$t2_varname"
       time_resolution: "$t2_resolution"
-      time_chunk_size: $chunk_days
+$t2m_time_chunk_size
       required: true
       dims: "$t2_dims"
 
