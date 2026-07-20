@@ -22,7 +22,7 @@ parameters:
   spatially_varying_file: "$params_csv"
 
 forcings:
-  type: "netcdf"
+  type: "$forcing_type"
   path: "$forcings_dir/"
 $time_chunking_setting
 
